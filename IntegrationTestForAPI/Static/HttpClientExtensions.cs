@@ -1,4 +1,5 @@
 ﻿using IntegrationTestForAPI.Classes;
+using JayanWebAPI.Static;
 using System.Net.Http.Headers;
 
 namespace IntegrationTestForAPI.Static
@@ -9,7 +10,7 @@ namespace IntegrationTestForAPI.Static
         {
             var token = new TestJwtToken();
             configure(token);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Build());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(UtilityForAPI.JWT_BEARER, token.Build());
             return client;
         }
     }

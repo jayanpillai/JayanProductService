@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using DataModel;
+using FluentAssertions;
 using IntegrationTestForAPI.Abstraction;
 using IntegrationTestForAPI.Classes;
+using IntegrationTestForAPI.Static;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,15 +16,16 @@ namespace IntegrationTestForAPI
 {
     public class LoginControllerTests : TestCaseUsingToken
     {
-       
-        [Fact]
-        public async Task Check_If_Service_Is_Running()
+
+        [Theory]
+        [InlineData("/api/Login/LoginForUser")]
+        public async Task Login_Attempt_By_InValid_User(string url)
         {
             var application = new WebAPITestFactory();
             var client = application.CreateClient();
-            var response = await client.GetAsync("/api/TestService/GetServiceStatus");
-            response.EnsureSuccessStatusCode();
- 
+            var request =  new UserDataModel() {UserName= "NotValid" };
+            var response = await client.PostAsJsonAsync(url, request);
+            Assert.Equal("BadRequest", response.StatusCode.ToString());
         }
       
     }
